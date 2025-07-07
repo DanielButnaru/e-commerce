@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import ProfilePage from "./pages/ProfilePage";
 
 
 function App() {
@@ -19,6 +20,14 @@ function App() {
               <Home />
             </ProtectedRoute>
           }
+        />
+        <Route 
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
         />
       </Routes>
     </Router>

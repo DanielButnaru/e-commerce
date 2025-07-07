@@ -1,3 +1,48 @@
+# E-commerce React App
+
+## Descriere
+
+Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, Vite și Tailwind CSS, care include integrarea autentificării utilizatorilor prin Firebase Authentication.
+
+---
+
+## Funcționalități implementate
+## 06/07/2025
+
+- Autentificare cu email și parolă (login și înregistrare) folosind Firebase  
+- Login cu Google (OAuth) integrat prin Firebase  
+- Funcționalitate resetare parolă prin email  
+- Gestionarea autentificării printr-un serviciu dedicat (`authService.ts`)  
+- Componente React pentru login, înregistrare și resetare parolă  
+- Utilizare async/await corectă pentru apelurile Firebase  
+- Stilizare cu Tailwind CSS  
+
+## 07/07/2025
+- Pagina de profil utilizator care afișează informațiile utilizatorului autentificat 
+- Editarea informațiilor de profil (name, adresa si phone)
+
+
+
+
+## Tehnologii folosite
+
+- React + TypeScript  
+- Vite (dev server rapid)  
+- Tailwind CSS  
+- Firebase Authentication  
+
+---
+
+## Cum să rulezi local
+
+1. Clonează proiectul și instalează dependențele:
+
+```bash
+npm install
+
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

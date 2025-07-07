@@ -13,9 +13,9 @@ export const useAuth = () => {
       setCurrentUser(user);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
+
 
   return { currentUser, loading };
 };
