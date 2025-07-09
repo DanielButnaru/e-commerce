@@ -9,20 +9,36 @@ import AppLayout from "./layout/AppLayout";
 import ShopPage from "./pages/Shop";
 import CartPage from "./pages/CartPage";
 import WishlistPage from "./pages/WishlistPage";
-import {Toaster} from "react-hot-toast";
 import ProductDetail from "./pages/ProductDetail";
 import CheckoutPage from "./pages/CheckoutPage";
+import { Toaster } from "react-hot-toast";
+
+//  Import Admin Panel
+import AdminLayout from "./admin/layout/AdminLayout";
+ import DashboardPage from "./admin/pages/admin/Dashboard";
+ import ProductsPage from "./admin/pages/admin/Products";
+// import OrdersPage from "./admin/pages/OrdersPage";
+// import UsersPage from "./admin/pages/UsersPage";
 
 function App() {
   return (
     <Router>
-        <Toaster position="top-right"/>
+      <Toaster position="top-right" />
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected routes inside layout */}
+        {/* Admin routes (separate layout) */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<DashboardPage />} /> 
+          <Route path="products" element={<ProductsPage />} />
+          {/*  
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="users" element={<UsersPage />} /> */}
+        </Route>
+
+        {/* User routes with protected layout */}
         <Route
           element={
             <ProtectedRoute>
@@ -33,12 +49,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/cart" element={<CartPage/>} />
-          <Route path="/wishlist" element={<WishlistPage/>} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-
-        
         </Route>
       </Routes>
     </Router>
