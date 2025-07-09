@@ -10,6 +10,7 @@ import ShopPage from "./pages/Shop";
 import CartPage from "./pages/CartPage";
 import WishlistPage from "./pages/WishlistPage";
 import {Toaster} from "react-hot-toast";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage/>} />
           <Route path="/wishlist" element={<WishlistPage/>} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+
         
         </Route>
       </Routes>

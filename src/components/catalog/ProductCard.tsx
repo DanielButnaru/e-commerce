@@ -2,7 +2,7 @@ import type { Product } from "../../types/product";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/slice/cartSlice";
-import { Heart, HeartOff } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useAppSelector } from "../../store/hooks";
 import {
   addToWishlist,
@@ -15,6 +15,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -60,13 +61,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="relative bg-white rounded-2xl shadow p-4 flex flex-col justify-between">
-      <img
+     <Link to={`/product/${product.id}`}>
+     <img
         src={product.image}
         alt={product.name}
         className="h-48 w-full object-cover rounded-xl mb-4"
       />
       <h3 className="text-lg font-semibold">{product.name}</h3>
       <p className="text-gray-500 text-sm mb-2">{product.description}</p>
+      </Link>
       <div className="flex items-center justify-between mt-auto">
         <span className="text-primary font-bold">
           {product.price.toFixed(2)} RON
@@ -85,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         className="absolute top-2 right-2 p-1 text-red-500 hover:scale-110 transition"
         aria-label={isWished ? "Șterge din wishlist" : "Adaugă în wishlist"}
       >
-        {isWished ? <HeartOff /> : <Heart />}
+        {isWished ? <Heart fill="red" /> : <Heart />}
       </button>
     </div>
   );
