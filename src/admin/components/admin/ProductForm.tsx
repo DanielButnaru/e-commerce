@@ -13,31 +13,49 @@ export default function ProductForm({ onSuccess, onCancel }: ProductFormProps) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number | "">("");
   const [stock, setStock] = useState<number | "">("");
-  const [category, setCategory] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [categoryInput, setCategoryInput] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+  const [imagesInput, setImagesInput] = useState(""); // pentru multiple imagini, input text separate prin virgulă
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !description || !price || !stock || !category || !imageUrl) {
-      alert("Completează toate câmpurile");
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !stock ||
+      !categoryInput ||
+      !thumbnail
+    ) {
+      alert("Completează toate câmpurile obligatorii");
       return;
     }
-    console.log({
-      name,
-      description,
-      price: Number(price),
-      stock: Number(stock),
-      category,
-      imageUrl,
-      createdAt: serverTimestamp(),
-    });
+
+    // Procesăm categoriile
+    const categories = categoryInput
+      .split(/[,;]/)
+      .map((cat) => cat.trim())
+      .filter((cat) => cat.length > 0);
+
+    if (categories.length === 0) {
+      alert("Introdu cel puțin o categorie validă");
+      return;
+    }
+
+    // Procesăm imagini multiple
+    const imageUrl = imagesInput
+      .split(",")
+      .map((url) => url.trim())
+      .filter((url) => url.length > 0);
+
     await addDoc(collection(db, "products"), {
       name,
       description,
       price: Number(price),
       stock: Number(stock),
-      category,
+      categories,
+      thumbnail,
       imageUrl,
       createdAt: serverTimestamp(),
     });
@@ -99,24 +117,46 @@ export default function ProductForm({ onSuccess, onCancel }: ProductFormProps) {
         </div>
       </div>
       <div>
-        <label className="block mb-1 font-medium">Categorie</label>
+        <label className="block mb-1 font-medium">Categorii</label>
         <input
           type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={categoryInput}
+          onChange={(e) => setCategoryInput(e.target.value)}
           className="w-full border rounded p-2"
+          placeholder="Separate prin virgulă sau punct și virgulă (ex: electronice, gadget-uri)"
+          required
+        />
+        <p className="text-sm text-gray-500 mt-1">
+          Introduceți categorii separate prin virgulă sau punct și virgulă
+        </p>
+      </div>
+
+      <div>
+        <label className="block mb-1 font-medium">Thumbnail (URL imagine)</label>
+        <input
+          type="text"
+          value={thumbnail}
+          onChange={(e) => setThumbnail(e.target.value)}
+          className="w-full border rounded p-2"
+          placeholder="URL imagine thumbnail"
           required
         />
       </div>
+
       <div>
-        <label className="block mb-1 font-medium">URL imagine</label>
+        <label className="block mb-1 font-medium">
+          Imagini multiple (URL-uri separate prin virgulă)
+        </label>
         <input
           type="text"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
+          value={imagesInput}
+          onChange={(e) => setImagesInput(e.target.value)}
           className="w-full border rounded p-2"
-          required
+          placeholder="URL1, URL2, URL3"
         />
+        <p className="text-sm text-gray-500 mt-1">
+          Introduceți URL-urile imaginilor separate prin virgulă
+        </p>
       </div>
 
       <div className="flex space-x-4">

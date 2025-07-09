@@ -67,6 +67,9 @@ Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, 
  # Am daugat pagina Checkout(wip) 
   TODO: de reveit dupa ce facem adminpanel cu gestionare produse si stocuri
 
+  # Admin Panel 
+  - Am creat o pagina de admin pentru gestionarea produselor( afisare din db, creare, editare, stergere)-wip
+
 
 
 ## Tehnologii folosite
