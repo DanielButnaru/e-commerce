@@ -8,6 +8,7 @@ import MobileMenu from './MobileMenu';
 import {Button} from '../ui/button';
 import UserButton from './UserButton';
 import { Heart } from 'lucide-react';
+import WishlistButton from './WishlistButton';
 
 
 
@@ -48,11 +49,7 @@ const Navbar = () =>{
           <SearchBar />
           <CartButton />
           <UserButton />
-          <Link to="/wishlist">
-            <Button variant="ghost" size="icon">
-              <Heart />
-            </Button>
-          </Link>
+          <WishlistButton />
 
           {/* Mobile Menu Toggle */}
           <Button
