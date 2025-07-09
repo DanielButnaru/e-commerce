@@ -8,10 +8,13 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AppLayout from "./layout/AppLayout";
 import ShopPage from "./pages/Shop";
 import CartPage from "./pages/CartPage";
+import WishlistPage from "./pages/WishlistPage";
+import {Toaster} from "react-hot-toast";
 
 function App() {
   return (
     <Router>
+        <Toaster position="top-right"/>
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
@@ -29,6 +32,8 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage/>} />
+          <Route path="/wishlist" element={<WishlistPage/>} />
+        
         </Route>
       </Routes>
     </Router>

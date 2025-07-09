@@ -1,9 +1,9 @@
 import type { Product } from "../../types/product";
-import { ProductCard } from "./ProductCard";
+import  ProductCard  from "./ProductCard";
 
 interface ProductGridProps {
     products: Product[];
-    onAddToCart: (product: Product) => void;
+    
 }
 export default function ProductGrid({ products}: ProductGridProps) {
   return (
