@@ -20,7 +20,40 @@ Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, 
 ## 07/07/2025
 - Pagina de profil utilizator care afișează informațiile utilizatorului autentificat 
 - Editarea informațiilor de profil (name, adresa si phone)
+## 08/07/2025
+- Bara de navigare(momentan este doar un protoip functional, la care vom reveni ulterior pentru a o stiliza):
+  TODO:revenire navbar
+- Componente reutilizabile (`Button.tsx`, `Input.tsx`) constuite cu :
+  ~ **`clsx`** - pentru gestionarea inteligentă a claselor CSS condiționale
+  ~ **`twMerge`** - pentru combinarea sigură a claselor Tailwind CSS
+- Pafina de shop(in lucru):
+  ~ am structurat fisierul products.ts cu datele produselor
+  ~ componente: ProductCard.tsx si ProductGrid.tsx
+  TODO: conectare baza de date, paginare, filtre si sortari
 
+## 09/07/2025
+- Setare Redux Toolkit:
+  Am creat un cartSlice cu:
+  ~ addToCart( adauga prod in cos sau creste cantiatea daca exista)
+  ~ removeFromCart
+  ~ clearCart
+  TODO:de reveint pentru eventuali validari suplimentare si finctionalitati
+  Am definit unn CartItem care extinde Product cu un camp suplimentar quantity
+- Store configurat + Redux Persist:
+  Am folosit redux-persist pentru a salva coșul în localStorage, astfel încât datele să rămână după refresh. Am configurat:
+  ~ persistReducer cu storage și whitelist: ['items']
+  ~ persistStore în store.ts 
+- Pagina CartPage
+  ~ Listeaza produsele din `state.cart.items`
+  ~ Calculeaza totalul cu `item.price * item.quantity`
+  ~ Afișează mesaj dacă coșul e gol
+- Componenta CartButton
+  ~ Afișează numărul total de produse (suma cantităților)
+  ~ Deschide un dropdown cu lista produselor
+  ~ Are un buton "Vezi coșul" care duce către /cart
+
+- Fixuri si debug
+  ~ Am descoperit că fără persist, coșul se golea la refresh
 
 
 
@@ -30,6 +63,7 @@ Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, 
 - Vite (dev server rapid)  
 - Tailwind CSS  
 - Firebase Authentication  
+
 
 ---
 
