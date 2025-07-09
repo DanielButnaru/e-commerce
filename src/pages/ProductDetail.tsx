@@ -49,7 +49,7 @@ export default function ProductDetail() {
         p.category.some((cat) => product.category.includes(cat))
     )
   : [];
-console.log(similarProducts)
+
   const handleCart = () => {
     if (product) {
       dispatch(addToCart(product));

@@ -58,11 +58,14 @@ Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, 
 # Wishlist
 -La început, wishlist-ul a fost gestionat cu **Redux Toolkit**, unde produsele favorite erau salvate local în aplicație. Am folosit `redux-persist` pentru a păstra datele chiar și după refresh, salvând totul în `localStorage`.
 
-#Am trecut apoi la o implementare mai robustă:
+# Am trecut apoi la o implementare mai robustă:
 - La autentificare, wishlist-ul utilizatorului este preluat din **Firestore**.
 - Când se adaugă sau se șterge un produs:
   - se actualizează instant în **Redux** (pentru UX rapid),
   - iar apoi se sincronizează și în **Firestore** (pentru salvare permanentă).
+
+ # Am daugat pagina Checkout(wip) 
+  TODO: de reveit dupa ce facem adminpanel cu gestionare produse si stocuri
 
 
 

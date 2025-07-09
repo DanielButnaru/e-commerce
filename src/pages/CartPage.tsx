@@ -50,7 +50,11 @@ export default function CartPage() {
            onClick={() => dispatch(clearCart())}>Goleste coşul</Button>
       </div>
       <div className="mt-6 text-right">
-        <Button>Plasează comanda</Button>
+        <Button className="text-black">
+          <Link to="/checkout">
+          Plasează comanda
+          </Link>
+          </Button>
       </div>
     </div>
   );

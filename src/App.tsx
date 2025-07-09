@@ -11,6 +11,7 @@ import CartPage from "./pages/CartPage";
 import WishlistPage from "./pages/WishlistPage";
 import {Toaster} from "react-hot-toast";
 import ProductDetail from "./pages/ProductDetail";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/cart" element={<CartPage/>} />
           <Route path="/wishlist" element={<WishlistPage/>} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
         
         </Route>
