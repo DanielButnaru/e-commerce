@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
-  addDoc,
   deleteDoc,
   doc,
 } from "firebase/firestore";
@@ -12,17 +11,7 @@ import { Button } from "../../../components/ui/button";
 import ProductForm from "../../components/admin/ProductForm";
 import toast from "react-hot-toast";
 import ProductEditDialog from "../../components/admin/ProductEditDialog";
-
-interface Product {
-  id?: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  categories: string[];
-  thumbnail?: string;
-  imageUrl?: string[];
-}
+import { type Product } from "../../../types/product";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -35,11 +24,19 @@ export default function AdminProducts() {
       const querySnapshot = await getDocs(collection(db, "products"));
       const prods: Product[] = [];
       querySnapshot.forEach((docSnap) => {
-        prods.push({ id: docSnap.id, ...(docSnap.data() as Product) });
+        const data = docSnap.data();
+        prods.push({ 
+          id: docSnap.id,
+          ...data,
+          // Convert Firestore Timestamps to Date
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        });
       });
       setProducts(prods);
     } catch (err) {
       toast.error("Eroare la încărcarea produselor");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -55,8 +52,9 @@ export default function AdminProducts() {
       await deleteDoc(doc(db, "products", id));
       fetchProducts();
       toast.success("Produs șters");
-    } catch {
+    } catch (err) {
       toast.error("Eroare la ștergerea produsului");
+      console.error(err);
     }
   };
 
@@ -66,9 +64,33 @@ export default function AdminProducts() {
     toast.success("Produs adăugat/editat");
   };
 
+  const renderVariantInfo = (product: Product) => {
+    if (!product.variants) return "—";
+    
+    const sizeCount = product.variants.sizes?.length || 0;
+    const colorCount = product.variants.colors?.length || 0;
+    return `${sizeCount} mărimi, ${colorCount} culori`;
+  };
+
+  const renderPriceInfo = (product: Product) => {
+    if (product.isOnSale && product.salePrice) {
+      return (
+        <div className="flex flex-col">
+          <span className="text-red-500 font-medium">
+            {product.salePrice.toFixed(2)} RON
+          </span>
+          <span className="line-through text-sm text-gray-500">
+            {product.basePrice.toFixed(2)} RON
+          </span>
+        </div>
+      );
+    }
+    return ;
+  };
+
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Gestionare Produse</h1>
         <Button onClick={() => setShowForm(true)}>Adaugă produs</Button>
       </div>
@@ -81,58 +103,91 @@ export default function AdminProducts() {
       )}
 
       {loading ? (
-        <p>Se încarcă...</p>
+        <div className="flex justify-center py-8">
+          <p>Se încarcă...</p>
+        </div>
       ) : (
-        <table className="w-full table-auto border-collapse border border-gray-300">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 p-2">Imagine</th>
-              <th className="border border-gray-300 p-2">Nume</th>
-              <th className="border border-gray-300 p-2">Preț</th>
-              <th className="border border-gray-300 p-2">Stoc</th>
-              <th className="border border-gray-300 p-2">Categorie</th>
-              <th className="border border-gray-300 p-2">Acțiuni</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((prod) => (
-              <tr key={prod.id}>
-                <td className="border border-gray-300 p-2">
-                  <img
-                    src={
-                      prod.thumbnail ||
-                      (prod.imageUrl?.length
-                        ? prod.imageUrl[0]
-                        : "/placeholder.jpg")
-                    }
-                    alt={prod.name}
-                    className="w-16 h-16 object-cover rounded-md"
-                  />
-                </td>
-                <td className="border border-gray-300 p-2">{prod.name}</td>
-                <td className="border border-gray-300 p-2">
-                  {prod.price.toFixed(2)} RON
-                </td>
-                <td className="border border-gray-300 p-2">{prod.stock}</td>
-                <td className="border border-gray-300 p-2">
-                  {Array.isArray(prod.categories)
-                    ? prod.categories.join(", ")
-                    : "—"}
-                </td>
-                <td className="border border-gray-300 p-2 space-x-2">
-                  <ProductEditDialog product={prod} onSuccess={fetchProducts} />
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(prod.id)}
-                  >
-                    Șterge
-                  </Button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto border-collapse">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left">Imagine</th>
+                <th className="px-4 py-3 text-left">Nume/SKU</th>
+                <th className="px-4 py-3 text-left">Preț</th>
+                <th className="px-4 py-3 text-left">Stoc</th>
+                <th className="px-4 py-3 text-left">Variante</th>
+                <th className="px-4 py-3 text-left">Categorii</th>
+                <th className="px-4 py-3 text-left">Status</th>
+                <th className="px-4 py-3 text-left">Acțiuni</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {products.map((prod) => (
+                <tr key={prod.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-3">
+                    <img
+                      src={
+                        prod.thumbnail ||
+                        (prod.images?.length ? prod.images[0] : "/placeholder.jpg")
+                      }
+                      alt={prod.name}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="font-medium">{prod.name}</div>
+                    <div className="text-sm text-gray-500">{prod.sku}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    {renderPriceInfo(prod)}
+                  </td>
+                  <td className="px-4 py-3">
+                    {prod.manageStock ? prod.stock : "∞"}
+                    {prod.lowStockThreshold && prod.stock <= prod.lowStockThreshold && (
+                      <span className="ml-2 text-xs text-red-500">Stoc scăzut</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {renderVariantInfo(prod)}
+                  </td>
+                  <td className="px-4 py-3">
+                    {Array.isArray(prod.categories)
+                      ? prod.categories.join(", ")
+                      : "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      prod.stockStatus === 'in-stock' 
+                        ? 'bg-green-100 text-green-800' 
+                        : prod.stockStatus === 'out-of-stock' 
+                          ? 'bg-red-100 text-red-800' 
+                          : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {prod.stockStatus === 'in-stock' 
+                        ? 'În stoc' 
+                        : prod.stockStatus === 'out-of-stock' 
+                          ? 'Stoc epuizat' 
+                          : 'Precomandă'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 space-x-2">
+                    <ProductEditDialog 
+                      product={prod} 
+                      onSuccess={fetchProducts} 
+                    />
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(prod.id)}
+                    >
+                      Șterge
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
