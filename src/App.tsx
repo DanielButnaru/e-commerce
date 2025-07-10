@@ -17,8 +17,8 @@ import { Toaster } from "react-hot-toast";
 import AdminLayout from "./admin/layout/AdminLayout";
  import DashboardPage from "./admin/pages/admin/Dashboard";
  import ProductsPage from "./admin/pages/admin/Products";
-// import OrdersPage from "./admin/pages/OrdersPage";
-// import UsersPage from "./admin/pages/UsersPage";
+ import OrdersPage from "./admin/pages/admin/Orders";
+ import UsersPage from "./admin/pages/admin/Users";
 
 function App() {
   return (
@@ -33,9 +33,9 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} /> 
           <Route path="products" element={<ProductsPage />} />
-          {/*  
+           
           <Route path="orders" element={<OrdersPage />} />
-          <Route path="users" element={<UsersPage />} /> */}
+         <Route path="users" element={<UsersPage />} /> 
         </Route>
 
         {/* User routes with protected layout */}
