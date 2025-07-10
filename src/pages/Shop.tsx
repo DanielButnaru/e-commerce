@@ -1,45 +1,39 @@
 import { useState } from "react";
-import { products } from "../data/products";
 import ProductGrid from "../components/catalog/ProductGrid";
 import type { Product } from "../types/product";
+import { useProductsFromFirestore } from "../hooks/products/useProductsFromFirestore";
 
 export default function ShopPage() {
+  const { products, loading } = useProductsFromFirestore();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(Infinity);
   const [sortBy, setSortBy] = useState<string>("");
 
   const allCategories = Array.from(
-    new Set(products.flatMap((p) => p.category))
+    new Set(products.flatMap((p) => p.categories))
   );
 
   const filteredProducts = products
     .filter((product) => {
       const matchesCategory =
-        !selectedCategory || product.category.includes(selectedCategory);
+        !selectedCategory || product.categories.includes(selectedCategory);
       const matchesPrice =
         product.price >= minPrice && product.price <= maxPrice;
 
       return matchesCategory && matchesPrice;
     })
     .sort((a, b) => {
-      if (sortBy === "name-asc") {
-        return a.name.localeCompare(b.name);
-      } else if (sortBy === "name-desc") {
-        return b.name.localeCompare(a.name);
-      } else if (sortBy === "price-asc") {
-        return a.price - b.price;
-      } else if (sortBy === "price-desc") {
-        return b.price - a.price;
-      }
+      if (sortBy === "name-asc") return a.name.localeCompare(b.name);
+      if (sortBy === "name-desc") return b.name.localeCompare(a.name);
+      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") return b.price - a.price;
       return 0;
     });
 
   return (
     <div className="container mx-auto px-4 py-8 grid md:grid-cols-[250px_1fr] gap-6">
-      {/* Sidebar filtre */}
       <aside className="space-y-6">
-        {/* Categorii */}
         <div>
           <h2 className="text-lg font-semibold mb-2">Categorii</h2>
           <ul className="space-y-1">
@@ -50,9 +44,7 @@ export default function ShopPage() {
                     selectedCategory === cat ? "font-bold text-primary" : ""
                   }`}
                   onClick={() =>
-                    setSelectedCategory(
-                      selectedCategory === cat ? null : cat
-                    )
+                    setSelectedCategory(selectedCategory === cat ? null : cat)
                   }
                 >
                   {cat}
@@ -62,7 +54,6 @@ export default function ShopPage() {
           </ul>
         </div>
 
-        {/* Filtru preț */}
         <div>
           <h2 className="text-lg font-semibold mb-2">Preț</h2>
           <input
@@ -81,7 +72,6 @@ export default function ShopPage() {
           />
         </div>
 
-        {/* Ordonare */}
         <div>
           <h2 className="text-lg font-semibold mb-2">Sortează după</h2>
           <select
@@ -97,10 +87,13 @@ export default function ShopPage() {
         </div>
       </aside>
 
-      {/* Produse */}
       <section>
         <h1 className="text-2xl font-bold mb-6">Catalog Produse</h1>
-        <ProductGrid products={filteredProducts} />
+        {loading ? (
+          <p>Se încarcă produsele...</p>
+        ) : (
+          <ProductGrid products={filteredProducts} />
+        )}
       </section>
     </div>
   );

@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type { Product } from "../types/product";
-import { products } from "../data/products"; // array local cu produse
 import { Button } from "../components/ui/button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slice/cartSlice";
@@ -12,27 +10,24 @@ import {
 import { useAppSelector } from "../store/hooks";
 import toast from "react-hot-toast";
 import ProductCard from "../components/catalog/ProductCard";
+import { useProductById } from "../hooks/products/useProductById";
+import { useProductsFromFirestore } from "../hooks/products/useProductsFromFirestore";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [mainImage, setMainImage] = useState<string | undefined>(undefined);
   const dispatch = useDispatch();
+
+  const { product, loading } = useProductById(id);
+  const { products } = useProductsFromFirestore(); // pentru produse similare
+
+  const [mainImage, setMainImage] = useState<string | undefined>(undefined);
 
   const isWished = useAppSelector((state) =>
     state.wishlist.items.some((item) => item.id === id)
   );
 
-  // Găsește produsul curent
   useEffect(() => {
-    if (!id) return;
-    const foundProduct = products.find((p) => p.id === id) || null;
-    setProduct(foundProduct);
-  }, [id]);
-
-  // Setează imaginea principală când produsul se schimbă
-  useEffect(() => {
-    if (product?.images && product.images.length > 0) {
+    if (product?.images?.length > 0) {
       setMainImage(product.images[0]);
     } else if (product?.image) {
       setMainImage(product.image);
@@ -41,12 +36,12 @@ export default function ProductDetail() {
     }
   }, [product]);
 
-  // Filtrează produse similare pe aceeași categorie, fără produsul curent
-  const similarProducts = product
-  ? products.filter(
-      (p) =>
-        p.id !== product.id &&
-        p.category.some((cat) => product.category.includes(cat))
+ const similarProducts = product
+  ? products.filter((p) =>
+      p.id !== product.id &&
+      Array.isArray(p.category) &&
+      Array.isArray(product.category) &&
+      p.category.some((cat) => product.category.includes(cat))
     )
   : [];
 
@@ -68,12 +63,13 @@ export default function ProductDetail() {
     }
   };
 
+  if (loading) return <p className="p-6">Se încarcă produsul...</p>;
   if (!product) return <p className="p-6">Produsul nu a fost găsit.</p>;
 
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="grid md:grid-cols-2 gap-10 mb-10">
-        {/* Coloană imagine + thumbnails */}
+        {/* Imagine produs */}
         <div>
           {mainImage ? (
             <img
@@ -101,7 +97,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Detalii produs */}
+        {/* Detalii */}
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">{product.name}</h1>
           <p className="text-gray-600">{product.description}</p>
@@ -119,16 +115,11 @@ export default function ProductDetail() {
 
       {/* Produse similare */}
       {similarProducts.length > 0 && (
-
-
-
-
         <section>
           <h2 className="text-2xl font-semibold mb-6">Produse similare</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {similarProducts.map((simProduct) => (
-                
-            <ProductCard key={simProduct.id} product={simProduct} />
+              <ProductCard key={simProduct.id} product={simProduct} />
             ))}
           </div>
         </section>
