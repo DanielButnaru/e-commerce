@@ -27,23 +27,24 @@ export default function ProductDetail() {
   );
 
   useEffect(() => {
-    if (product?.images?.length > 0) {
-      setMainImage(product.images[0]);
-    } else if (product?.image) {
-      setMainImage(product.image);
+    if(product?.thumbnail){
+      setMainImage(product.thumbnail)
+    }else if( product?.imageUrl?.length > 0){
+      setMainImage(product.imageUrl[0])
     } else {
-      setMainImage(undefined);
+      setMainImage(undefined)
     }
   }, [product]);
 
- const similarProducts = product
-  ? products.filter((p) =>
-      p.id !== product.id &&
-      Array.isArray(p.category) &&
-      Array.isArray(product.category) &&
-      p.category.some((cat) => product.category.includes(cat))
-    )
-  : [];
+  const similarProducts = product
+    ? products.filter(
+        (p) =>
+          p.id !== product.id &&
+          Array.isArray(p.categories) &&
+          Array.isArray(product.categories) &&
+          p.categories.some((cat) => product.categories.includes(cat))
+      )
+    : [];
 
   const handleCart = () => {
     if (product) {
@@ -83,7 +84,7 @@ export default function ProductDetail() {
             </div>
           )}
           <div className="flex space-x-4">
-            {(product.images ?? [product.image]).map((img, i) => (
+            {(product.imageUrl ?? [product.imageUrl]).map((img, i) => (
               <img
                 key={i}
                 src={img}

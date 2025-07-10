@@ -60,26 +60,26 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="relative bg-white rounded-2xl shadow p-4 flex flex-col justify-between">
-     <Link to={`/product/${product.id}`}>
-     <img
-        src={product.image}
-        alt={product.name}
-        className="h-48 w-full object-cover rounded-xl mb-4"
-      />
-      <h3 className="text-lg font-semibold">{product.name}</h3>
-      <p className="text-gray-500 text-sm mb-2">{product.description}</p>
+    <div className="relative bg-white rounded-2xl shadow flex flex-col justify-between">
+      <Link to={`/product/${product.id}`}>
+        <img
+          src={product.thumbnail}
+          alt={product.name}
+          className="h-48 w-full object-cover rounded-xl mb-4"
+        />
+        <h3 className="text-lg px-2 font-semibold">{product.name}</h3>
       </Link>
-      <div className="flex items-center justify-between mt-auto">
-        <span className="text-primary font-bold">
-          {product.price.toFixed(2)} RON
+      <div className="flex flex-col items-center justify-between mt-auto gap-2 py-4 px-2">
+        <span className="text-primary text-lg font-semibold inline-flex">
+          {product.price.toFixed(2)}
+          <span className="text-gray-500 text-lg ml-1">$</span>
         </span>
         <Button
           size="sm"
           onClick={() => dispatch(addToCart(product))}
-          className="text-black"
+          className="text-white hover:scale-105 transition cursor-pointer w-full"
         >
-          Adaugă în coș
+          Add to cart
         </Button>
       </div>
 

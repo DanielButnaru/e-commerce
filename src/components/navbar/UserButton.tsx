@@ -47,7 +47,9 @@ const UserButton = () => {
             </Link>
           )}
         </div>
-        <DropdownItem onClick={() => alert("Profile clicked")}>
+        <DropdownItem 
+        tag="a"
+        to="/profile">
           Profile
         </DropdownItem>
         <DropdownItem onClick={() => alert("Settings clicked")}>

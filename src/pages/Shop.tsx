@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ProductGrid from "../components/catalog/ProductGrid";
-import type { Product } from "../types/product";
 import { useProductsFromFirestore } from "../hooks/products/useProductsFromFirestore";
 
 export default function ShopPage() {
@@ -33,15 +32,16 @@ export default function ShopPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 grid md:grid-cols-[250px_1fr] gap-6">
-      <aside className="space-y-6">
+      <aside className="space-y-6 shadow-right pr-6">
         <div>
-          <h2 className="text-lg font-semibold mb-2">Categorii</h2>
-          <ul className="space-y-1">
+          <h2 className="text-xl font-semibold mb-4 border-b pb-4">Categories</h2>
+
+          <ul className="space-y-2">
             {allCategories.map((cat) => (
               <li key={cat}>
                 <button
-                  className={`text-sm ${
-                    selectedCategory === cat ? "font-bold text-primary" : ""
+                  className={` cursor-pointer text-base font-medium hover:bg-gray-300 w-full text-start px-1 ${
+                    selectedCategory === cat ? "font-bold  text-primary" : ""
                   }`}
                   onClick={() =>
                     setSelectedCategory(selectedCategory === cat ? null : cat)
@@ -55,7 +55,7 @@ export default function ShopPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">Preț</h2>
+          <h2 className="text-lg font-semibold mb-4 border-b pb-4">Price</h2>
           <input
             type="number"
             placeholder="Minim"
@@ -73,22 +73,22 @@ export default function ShopPage() {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">Sortează după</h2>
+          <h2 className="text-lg font-semibold mb-4 border-b pb-4">Sort by</h2>
           <select
             className="w-full p-2 border rounded"
             onChange={(e) => setSortBy(e.target.value)}
           >
-            <option value="">-- Selectează --</option>
-            <option value="name-asc">Nume (A-Z)</option>
-            <option value="name-desc">Nume (Z-A)</option>
-            <option value="price-asc">Preț crescător</option>
-            <option value="price-desc">Preț descrescător</option>
+            <option value="">-- Sort --</option>
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="price-asc">Ascending Price</option>
+            <option value="price-desc">Descending Price</option>
           </select>
         </div>
       </aside>
 
       <section>
-        <h1 className="text-2xl font-bold mb-6">Catalog Produse</h1>
+        <h1 className="text-2xl font-bold mb-6">Products</h1>
         {loading ? (
           <p>Se încarcă produsele...</p>
         ) : (
