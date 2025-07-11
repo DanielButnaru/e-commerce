@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import { Switch } from "../../../components/ui/switch";
-import { set } from "react-hook-form";
 
 interface ProductFormProps {
   onSuccess: () => void;
@@ -35,7 +34,6 @@ export default function ProductForm({ onSuccess, onCancel }: ProductFormProps) {
 
   // Media
   const [thumbnail, setThumbnail] = useState("");
-  const [images, setImages] = useState<string[]>([]);
   const [imageInput, setImageInput] = useState("");
 
   // Organization
@@ -371,8 +369,7 @@ export default function ProductForm({ onSuccess, onCancel }: ProductFormProps) {
             <select
               value={stockStatus}
               onChange={(e) => setStockStatus(e.target.value as any)}
-              className="w-full border rounded p-2"
-            >
+              className="w-full border rounded p-2">
               <option value="in-stock">În stoc</option>
               <option value="out-of-stock">Stoc epuizat</option>
               <option value="pre-order">Precomandă</option>

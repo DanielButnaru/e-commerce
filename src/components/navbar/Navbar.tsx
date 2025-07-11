@@ -1,5 +1,5 @@
-import{Menu, User, ShoppingCart} from 'lucide-react';
-import {motion} from 'framer-motion';
+import{Menu} from 'lucide-react';
+
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
@@ -7,7 +7,7 @@ import CartButton from './CartButton'
 import MobileMenu from './MobileMenu';
 import {Button} from '../ui/button';
 import UserButton from './UserButton';
-import { Heart } from 'lucide-react';
+
 import WishlistButton from './WishlistButton';
 
 

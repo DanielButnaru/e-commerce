@@ -1,7 +1,6 @@
 import { useUserProfile } from "../../hooks/user/useUserProfile";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { current } from "@reduxjs/toolkit";
 
 interface Address {
   street: string;

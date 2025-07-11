@@ -1,17 +1,20 @@
 // src/App.tsx
+import React  from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { adminRoutes } from "./admin/routes";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import AppLayout from "./layout/AppLayout";
-import ProfilePage from "./pages/ProfilePage";
-import ShopPage from "./pages/Shop";
-import CartPage from "./pages/CartPage";
-import WishlistPage from "./pages/WishlistPage";
-import ProductDetail from "./pages/ProductDetail";
-import CheckoutPage from "./pages/CheckoutPage";
-import ProtectedRoute from "./routes/ProtectedRoute";
+const Login = React.lazy(() => import("./pages/Login")); 
+const Register = React.lazy(() => import("./pages/Register"));
+const AppLayout = React.lazy(() => import("./layout/AppLayout"));
+const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
+const ShopPage = React.lazy(() => import("./pages/Shop"));
+const CartPage = React.lazy(() => import("./pages/CartPage"));
+const WishlistPage = React.lazy(() => import("./pages/WishlistPage"));
+const ProductDetail = React.lazy(() => import("./pages/ProductDetail"));
+const CheckoutPage = React.lazy(() => import("./pages/CheckoutPage"));
+const ProtectedRoute = React.lazy(() => import("./routes/ProtectedRoute"));
+
+
 // import NotFoundPage from "./pages/NotFoundPage"; // Adaugă o pagină pentru 404
 
 function App() {

@@ -16,6 +16,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import OptimizedImage from "../ui/OptimizedImage";
 
 interface ProductCardProps {
   product: Product;
@@ -71,6 +72,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     product.stockStatus === "in-stock" &&
     product.stock <= (product.lowStockThreshold || 5);
 
+
+
   return (
     <div
       className={`relative bg-white rounded-2xl shadow flex flex-col justify-between  ${
@@ -95,11 +98,23 @@ export default function ProductCard({ product }: ProductCardProps) {
       )}
 
       <Link to={`/product/${product.id}`} className="group">
-        <img
+
+
+        <OptimizedImage
+          src={product.thumbnail}
+          alt={product.name}
+          width={400}
+          height={600}
+          quality={80}
+          className="h-48 w-full object-contain rounded-xl mb-4 group-hover:opacity-90 transition-opacity"
+          
+          priority= {true}
+        />
+        {/* <img
           src={product.thumbnail}
           alt={product.name}
           className="h-48 w-full object-contain rounded-xl mb-4 group-hover:opacity-90 transition-opacity"
-        />
+        /> */}
         <div className="px-2">
           <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
             {product.name}

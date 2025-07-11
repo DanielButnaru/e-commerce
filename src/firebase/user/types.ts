@@ -8,5 +8,6 @@ export interface UserProfile{
         state: string;
         zip: string;
     };
+    role:'user' | 'admin';
     
 }

@@ -1,5 +1,6 @@
+import React from "react";
 import type { Product } from "../../types/product";
-import ProductCard from "./ProductCard";
+const ProductCard = React.lazy(() => import("./ProductCard"));
 
 interface ProductGridProps {
   products: Product[];

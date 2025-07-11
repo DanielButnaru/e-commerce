@@ -185,8 +185,7 @@ export default function Orders() {
         body: itemsData,
         theme: "grid",
         headStyles: { fillColor: [41, 128, 185] },
-      });
-
+      })
       yPosition = (doc as any).lastAutoTable.finalY + 10;
     });
 

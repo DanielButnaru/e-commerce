@@ -10,7 +10,6 @@ import { auth } from "./firebaseConfig";
 
 
 
-
 export const registerUser = (email:string, password:string) => 
     createUserWithEmailAndPassword(auth, email, password);
 
