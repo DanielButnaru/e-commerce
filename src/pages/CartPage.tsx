@@ -39,7 +39,7 @@ export default function CartPage() {
     return (
       <div className="text-center py-10">
         <h2 className="text-2xl font-semibold">Your cart is empty</h2>
-        <Link to="/shop">
+        <Link to="/">
           <Button className="mt-4">See Products</Button>
         </Link>
       </div>

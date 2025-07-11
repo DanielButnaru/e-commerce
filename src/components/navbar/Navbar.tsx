@@ -13,10 +13,9 @@ import WishlistButton from './WishlistButton';
 
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/shop', label: 'Products' },
+  { href: '/', label: 'Products' },
   { href: '/cart', label: 'Cart' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/admin', label: 'Admin Dashboard' },
 ];
 
 
