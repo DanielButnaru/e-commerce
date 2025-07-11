@@ -80,12 +80,17 @@ export default function AdminProducts() {
             {product.salePrice.toFixed(2)} RON
           </span>
           <span className="line-through text-sm text-gray-500">
-            {product.basePrice.toFixed(2)} RON
+            {product.basePrice} RON
           </span>
         </div>
+
       );
     }
-    return ;
+    return (
+      <span className="text-green-500 font-medium">
+        {product.basePrice} RON
+      </span>
+    );
   };
 
   return (

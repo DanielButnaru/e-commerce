@@ -75,7 +75,8 @@ Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, 
  
  ## 10/07/2025 
 
-  # Am extins produl adaugandui mai multe detalii pentru ogestionare mai buna si modificare corespunzatoare tutoror paginilor si componentlor ce tineau de produs( afisare, editare, creare, adauga cos, etc)
+  # Extindere interface Product
+  - Am extins produsul adaugandui mai multe detalii pentru gestionare mai buna si am actualizat codul in toate paginile si componentele ce tineau de produs( afisare, editare, creare, adauga cos, etc) 
   
   
   ## 11/07/2025

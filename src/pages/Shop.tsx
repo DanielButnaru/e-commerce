@@ -13,35 +13,40 @@ export default function ShopPage() {
   const allCategories = Array.from(
     new Set(
       products
-        .filter(p => p.categories && Array.isArray(p.categories))
-        .flatMap(p => p.categories)
+        .filter((p) => p.categories && Array.isArray(p.categories))
+        .flatMap((p) => p.categories)
         .filter(Boolean)
     )
-  );
+  ).sort();
 
   // Verifică dacă sunt filtre active
-  const hasActiveFilters = 
-    selectedCategory !== null || 
-    minPrice !== 0 || 
-    maxPrice !== Infinity || 
+  const hasActiveFilters =
+    selectedCategory !== null ||
+    minPrice !== 0 ||
+    maxPrice !== Infinity ||
     sortBy !== "";
 
-  const filteredProducts = hasActiveFilters 
+  const filteredProducts = hasActiveFilters
     ? products
         .filter((product) => {
-          const hasCategories = product.categories && Array.isArray(product.categories);
+          const hasCategories =
+            product.categories && Array.isArray(product.categories);
+            
           const matchesCategory =
-            !selectedCategory || 
+            !selectedCategory ||
             (hasCategories && product.categories.includes(selectedCategory));
+            
           const matchesPrice =
-            product.price >= minPrice && product.price <= maxPrice;
+            product.basePrice >= minPrice && product.basePrice <= maxPrice;
+         
+
           return matchesCategory && matchesPrice;
         })
         .sort((a, b) => {
           if (sortBy === "name-asc") return a.name.localeCompare(b.name);
           if (sortBy === "name-desc") return b.name.localeCompare(a.name);
-          if (sortBy === "price-asc") return a.price - b.price;
-          if (sortBy === "price-desc") return b.price - a.price;
+          if (sortBy === "price-asc") return a.basePrice - b.basePrice;
+          if (sortBy === "price-desc") return b.basePrice - a.basePrice;
           return 0;
         })
     : products; // Dacă nu sunt filtre active, returnează toate produsele
@@ -66,7 +71,9 @@ export default function ShopPage() {
     <div className="container mx-auto px-4 py-8 grid md:grid-cols-[250px_1fr] gap-6">
       <aside className="space-y-6 shadow-right pr-6">
         <div>
-          <h2 className="text-xl font-semibold mb-4 border-b pb-4">Categories</h2>
+          <h2 className="text-xl font-semibold mb-4 border-b pb-4">
+            Categories
+          </h2>
           <ul className="space-y-2">
             <li>
               <button
@@ -143,7 +150,7 @@ export default function ShopPage() {
 
       <section>
         <h1 className="text-2xl font-bold mb-6">Products</h1>
-        
+
         {products.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
@@ -170,8 +177,8 @@ export default function ShopPage() {
                 </button>
               </div>
             ) : (
-              <ProductGrid 
-                products={filteredProducts} 
+              <ProductGrid
+                products={filteredProducts}
                 showFiltersSummary={hasActiveFilters}
               />
             )}

@@ -11,7 +11,6 @@
   costPrice?: number; // Preț de cost (pentru profit)
   discountPercentage?: number; // Procent reducere
   isOnSale: boolean;
-  taxRate: number; // Cota TVA (ex: 0.19 pentru 19%)
 
   // Descriere și conținut
   description: string;
@@ -73,10 +72,6 @@
     customText?: string; // Text predefinit
   };
 
-  // SEO
-  metaTitle?: string;
-  metaDescription?: string;
-  metaKeywords?: string[];
 
   // Audit
   createdAt: Date;

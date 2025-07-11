@@ -9,7 +9,7 @@ export default function ProductGrid({
   products,
   showFiltersSummary = false,
 }: ProductGridProps) {
-  console.log("Products in grid:", products); // Verifică datele primite
+
 
   if (!products || products.length === 0) {
     return <div>Nu există produse de afișat</div>;
