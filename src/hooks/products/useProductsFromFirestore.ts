@@ -3,29 +3,32 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import type { Product } from "../../types/product";
 
-export function useProductsFromFirestore() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+// Exemplu implementare corectă a hook-ului
+export const useProductsFromFirestore = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-    useEffect(()=>{
-        const fetchProducts = async () => {
-            setLoading(true);
-            try{
-                const querySnapshot = await getDocs(collection(db, "products"));
-                const prods: Product[] = [];
-                querySnapshot.forEach((docSnap) => {
-                    prods.push({id: docSnap.id, ...(docSnap.data() as Product)});
-                });
-                setProducts(prods);
-            } catch(err){
-                setError("Eroare la incarcarea produselor");
-            } finally{
-                setLoading(false);
-            }
-        }
-        fetchProducts();
-    }, []);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const productsData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          categories: doc.data().categories || []
+        } as Product));
+        setProducts(productsData);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return {products, loading, error};
-}
+    fetchProducts();
+  }, []);
+
+  return { products, loading, error };
+};
+
