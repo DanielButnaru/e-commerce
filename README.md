@@ -67,8 +67,29 @@ Acesta este un proiect de aplicație e-commerce construit cu React, TypeScript, 
  # Am daugat pagina Checkout(wip) 
   TODO: de reveit dupa ce facem adminpanel cu gestionare produse si stocuri
 
-  # Admin Panel 
-  - Am creat o pagina de admin pentru gestionarea produselor( afisare din db, creare, editare, stergere)-wip
+ # Admin Panel 
+  - Am creat o pagina de admin pentru gestionarea produselor( afisare din db, creare, editare, stergere) wip
+
+ # SearcBar 
+  - Face search live in lista de produse 
+ 
+ ## 10/07/2025 
+
+  # Am extins produl adaugandui mai multe detalii pentru ogestionare mai buna si modificare corespunzatoare tutoror paginilor si componentlor ce tineau de produs( afisare, editare, creare, adauga cos, etc)
+  
+  
+  ## 11/07/2025
+   
+  # admin/Orders
+  - Am implementat `jsPDF` in pagina Orders, si exporta o factura DEMO
+
+  # Fixuri 
+  - Am rectificat problema de ProductForm la crearea produsului, firebase nu-mi permiea sa inserz field uri undefined, aparent era o problema de cod 
+  - Am rezolvat problema de aparuta pe shop la filtrarea produselor, era o greseala de scriere   
+
+
+
+
 
 
 
