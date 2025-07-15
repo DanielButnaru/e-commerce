@@ -1,11 +1,5 @@
-// admin/AdminProducts.tsx
 import { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import { Button } from "../../../components/ui/button";
 import ProductForm from "../../components/admin/ProductForm";
@@ -25,13 +19,14 @@ export default function AdminProducts() {
       const prods: Product[] = [];
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
-        prods.push({ 
-          id: docSnap.id,
+        const product: Partial<Product> = {
           ...data,
+          id: docSnap.id,
           // Convert Firestore Timestamps to Date
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate()
-        });
+          createdAt: data.createdAt?.toDate() || new Date(),
+          updatedAt: data.updatedAt?.toDate() || new Date(),
+        };
+        prods.push(product as Product);
       });
       setProducts(prods);
     } catch (err) {
@@ -66,7 +61,7 @@ export default function AdminProducts() {
 
   const renderVariantInfo = (product: Product) => {
     if (!product.variants) return "—";
-    
+
     const sizeCount = product.variants.sizes?.length || 0;
     const colorCount = product.variants.colors?.length || 0;
     return `${sizeCount} mărimi, ${colorCount} culori`;
@@ -83,7 +78,6 @@ export default function AdminProducts() {
             {product.basePrice} RON
           </span>
         </div>
-
       );
     }
     return (
@@ -133,7 +127,9 @@ export default function AdminProducts() {
                     <img
                       src={
                         prod.thumbnail ||
-                        (prod.images?.length ? prod.images[0] : "/placeholder.jpg")
+                        (prod.images?.length
+                          ? prod.images[0]
+                          : "/placeholder.jpg")
                       }
                       alt={prod.name}
                       className="w-16 h-16 object-cover rounded-md"
@@ -143,42 +139,43 @@ export default function AdminProducts() {
                     <div className="font-medium">{prod.name}</div>
                     <div className="text-sm text-gray-500">{prod.sku}</div>
                   </td>
-                  <td className="px-4 py-3">
-                    {renderPriceInfo(prod)}
-                  </td>
+                  <td className="px-4 py-3">{renderPriceInfo(prod)}</td>
                   <td className="px-4 py-3">
                     {prod.manageStock ? prod.stock : "∞"}
-                    {prod.lowStockThreshold && prod.stock <= prod.lowStockThreshold && (
-                      <span className="ml-2 text-xs text-red-500">Stoc scăzut</span>
-                    )}
+                    {prod.lowStockThreshold &&
+                      prod.stock <= prod.lowStockThreshold && (
+                        <span className="ml-2 text-xs text-red-500">
+                          Stoc scăzut
+                        </span>
+                      )}
                   </td>
-                  <td className="px-4 py-3">
-                    {renderVariantInfo(prod)}
-                  </td>
+                  <td className="px-4 py-3">{renderVariantInfo(prod)}</td>
                   <td className="px-4 py-3">
                     {Array.isArray(prod.categories)
                       ? prod.categories.join(", ")
                       : "—"}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      prod.stockStatus === 'in-stock' 
-                        ? 'bg-green-100 text-green-800' 
-                        : prod.stockStatus === 'out-of-stock' 
-                          ? 'bg-red-100 text-red-800' 
-                          : 'bg-blue-100 text-blue-800'
-                    }`}>
-                      {prod.stockStatus === 'in-stock' 
-                        ? 'În stoc' 
-                        : prod.stockStatus === 'out-of-stock' 
-                          ? 'Stoc epuizat' 
-                          : 'Precomandă'}
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full ${
+                        prod.stockStatus === "in-stock"
+                          ? "bg-green-100 text-green-800"
+                          : prod.stockStatus === "out-of-stock"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
+                    >
+                      {prod.stockStatus === "in-stock"
+                        ? "În stoc"
+                        : prod.stockStatus === "out-of-stock"
+                        ? "Stoc epuizat"
+                        : "Precomandă"}
                     </span>
                   </td>
                   <td className="px-4 py-3 space-x-2">
-                    <ProductEditDialog 
-                      product={prod} 
-                      onSuccess={fetchProducts} 
+                    <ProductEditDialog
+                      product={prod}
+                      onSuccess={fetchProducts}
                     />
                     <Button
                       size="sm"

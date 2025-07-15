@@ -5,7 +5,7 @@ import { removeFromCart, updateQuantity } from "../../store/slice/cartSlice";
 import { useEffect, useState } from "react";
 
 interface CartItemProps {
-  product: Product & { 
+  product: Product & {
     quantity: number;
     selectedSize?: string;
     selectedColor?: string;
@@ -18,37 +18,53 @@ export default function CartItem({ product }: CartItemProps) {
 
   // Actualizează prețul în funcție de variantele selectate
   useEffect(() => {
-    let calculatedPrice = product.basePrice || product.price || 0;
-    
+    let calculatedPrice = product.basePrice || product.salePrice || 0;
+
     // Aplică modificator de preț pentru mărimea selectată
     if (product.selectedSize && product.variants?.sizes) {
-      const size = product.variants.sizes.find(s => s.id === product.selectedSize);
+      const size = product.variants.sizes.find(
+        (s) => s.id === product.selectedSize
+      );
       if (size?.priceModifier) {
         calculatedPrice += size.priceModifier;
       }
     }
-    
+
     setCurrentPrice(calculatedPrice);
-  }, [product.selectedSize, product.variants, product.basePrice, product.price]);
+  }, [
+    product.selectedSize,
+    product.variants,
+    product.basePrice,
+    product.salePrice,
+  ]);
 
   const handleQuantityChange = (newQuantity: number) => {
     const quantity = Math.max(1, newQuantity);
-    dispatch(updateQuantity({ 
-      id: product.id, 
-      quantity,
-      selectedSize: product.selectedSize,
-      selectedColor: product.selectedColor
-    }));
+    if (product.id) {
+      dispatch(
+        updateQuantity({
+          id: product.id,
+          quantity,
+          selectedSize: product.selectedSize,
+          selectedColor: product.selectedColor,
+        })
+      );
+    } else {
+      console.error("Product ID is undefined");
+    }
   };
 
   const getSizeName = () => {
     if (!product.selectedSize) return null;
-    return product.variants?.sizes?.find(s => s.id === product.selectedSize)?.name;
+    return product.variants?.sizes?.find((s) => s.id === product.selectedSize)
+      ?.name;
   };
 
   const getColor = () => {
     if (!product.selectedColor) return null;
-    return product.variants?.colors?.find(c => c.id === product.selectedColor);
+    return product.variants?.colors?.find(
+      (c) => c.id === product.selectedColor
+    );
   };
 
   // Formatare sigură a prețului
@@ -74,7 +90,7 @@ export default function CartItem({ product }: CartItemProps) {
               </span>
             )}
           </div>
-          
+
           {/* Afișare variante selectate */}
           <div className="mt-1 space-y-1">
             {product.selectedSize && (
@@ -82,11 +98,11 @@ export default function CartItem({ product }: CartItemProps) {
                 Size: <span className="font-medium">{getSizeName()}</span>
               </p>
             )}
-            
+
             {product.selectedColor && (
               <div className="flex items-center gap-2">
                 <p className="text-sm text-gray-600">Color: </p>
-                <div 
+                <div
                   className="w-4 h-4 rounded-full border border-gray-300"
                   style={{ backgroundColor: getColor()?.hexCode }}
                   title={getColor()?.name}
@@ -108,27 +124,24 @@ export default function CartItem({ product }: CartItemProps) {
               >
                 -
               </Button>
-              
+
               <span className="px-3 text-sm font-medium">
                 {product.quantity}
               </span>
-              
+
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-8 w-8 rounded-none"
                 onClick={() => handleQuantityChange(product.quantity + 1)}
-                disabled={
-                  product.selectedSize && 
-                  product.variants?.sizes?.find(s => s.id === product.selectedSize)?.stock <= product.quantity
-                }
+                disabled={product.quantity >= 10}
               >
                 +
               </Button>
             </div>
 
             <span className="mx-2 text-gray-400">|</span>
-            
+
             <p className="text-sm text-gray-500">
               {formatPrice(currentPrice)} $
             </p>
@@ -140,11 +153,11 @@ export default function CartItem({ product }: CartItemProps) {
           </p>
         </div>
       </div>
-      
+
       <Button
         variant="destructive"
         size="sm"
-        onClick={() => dispatch(removeFromCart(product.id))}
+        onClick={() => product.id && dispatch(removeFromCart(product.id))}
         className="mt-1"
       >
         Remove

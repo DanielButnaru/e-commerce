@@ -2,7 +2,7 @@ export interface UserProfile{
     name: string;
     email: string;
     phone?: string;
-    adress?:{
+    address?:{
         street?: string;
         city?: string;
         state?: string;

@@ -79,6 +79,7 @@
   relatedProducts: string[]; // ID-uri produse similare
 }
 
+
 // Interfețe auxiliare
 interface ProductSize {
   id: string;
@@ -118,3 +119,4 @@ interface ProductReview {
   comment: string;
   date: Date;
 }
+

@@ -21,7 +21,7 @@ export default function Users() {
       const querySnapshot = await getDocs(collection(db, "users"));
       const fetchedUsers: User[] = [];
       querySnapshot.forEach((doc) => {
-        fetchedUsers.push({ id: doc.id, ...(doc.data() as User) });
+        fetchedUsers.push({ ...(doc.data() as User) });
       });
       setUsers(fetchedUsers);
     } catch (err) {
@@ -48,7 +48,6 @@ export default function Users() {
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className="border p-2 text-left">ID</th>
               <th className="border p-2 text-left">Email</th>
               <th className="border p-2 text-left">Nume</th>
               <th className="border p-2 text-left">Rol</th>
@@ -57,7 +56,6 @@ export default function Users() {
           <tbody>
             {users.map((user) => (
               <tr key={user.id} className="border-b">
-                <td className="border p-2">{user.id}</td>
                 <td className="border p-2">{user.email}</td>
                 <td className="border p-2">{user.name || "-"}</td>
                 <td className="border p-2">{user.role || "user"}</td>

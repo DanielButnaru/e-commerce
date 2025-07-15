@@ -36,8 +36,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
 
     if (isWished) {
-      dispatch(removeFromWishlist(product.id));
-      syncRemoveProductFromFirestore(user.uid, product.id).catch(console.error);
+      dispatch(removeFromWishlist(product.id ?? ""));
+      syncRemoveProductFromFirestore(user.uid, product.id ?? "").catch(console.error);
       toast("Produs șters din wishlist", { icon: "🗑️" });
     } else {
       dispatch(addToWishlist(product));

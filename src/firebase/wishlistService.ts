@@ -1,5 +1,5 @@
 // src/firebase/wishlistService.ts
-import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"
+import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"
 import { db } from "./firebaseConfig"
 import type { Product } from "../types/product"
 

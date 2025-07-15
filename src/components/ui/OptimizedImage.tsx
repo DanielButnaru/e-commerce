@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
+// Add type extension for Window
+declare global {
+  interface Window {
+    __lcpDone?: boolean;
+  }
+}
+
 interface OptimizedImageProps {
   src: string;
   alt: string;
@@ -7,7 +14,7 @@ interface OptimizedImageProps {
   height?: number;
   quality?: number;
   className?: string;
-  priority?: boolean; // Pentru elemente LCP critice
+  priority?: boolean;
 }
 
 const OptimizedImage = ({
@@ -17,14 +24,13 @@ const OptimizedImage = ({
   height = 600,
   quality = 80,
   className = "",
-  
   priority = false,
 }: OptimizedImageProps) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const isFirebaseStorage = src.includes("firebasestorage.googleapis.com");
 
-  // Preload pentru imagini critice (LCP)
+  // Preload for critical images (LCP)
   useEffect(() => {
     if (priority && imgRef.current) {
       const link = document.createElement("link");
@@ -50,12 +56,12 @@ const OptimizedImage = ({
       return `${src}${src.includes("?") ? "&" : "?"}${params.toString()}`;
     }
 
-    // Verifică dacă e URL extern (non-Firebase)
+    // Check if it's an external URL (non-Firebase)
     try {
       new URL(src);
       return `https://images.weserv.nl/?url=${encodeURIComponent(src)}&w=${width}&h=${height}&q=${quality}&output=webp`;
     } catch {
-      return src; // Dacă nu e URL valid, returnează original
+      return src; // If not a valid URL, return original
     }
   };
 
@@ -65,14 +71,16 @@ const OptimizedImage = ({
       window.__lcpDone = true;
       // Performance tracking
       if (window.performance?.mark) {
-        performance.mark("lcp_image_loaded");
+        window.performance.mark("lcp_image_loaded");
+        // Optional: Add measure
+        window.performance.measure("lcp_image", undefined, "lcp_image_loaded");
       }
     }
   };
 
   return (
-    <div className={``}>
-      {/* Placeholder pentru aspect ratio */}
+    <div className={`relative ${className}`}>
+      {/* Placeholder for aspect ratio */}
       {!isLoaded && (
         <div 
           className="absolute inset-0 bg-gray-200 animate-pulse"
@@ -90,9 +98,11 @@ const OptimizedImage = ({
         height={height}
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
-        className={` ${ className }` }
+        className={`w-full  transition-opacity duration-300 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        } ${className}`}
         onLoad={handleLoad}
-        onError={() => setIsLoaded(true)} // Fallback pentru erori
+        onError={() => setIsLoaded(true)}
       />
     </div>
   );
