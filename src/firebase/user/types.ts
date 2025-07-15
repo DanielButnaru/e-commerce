@@ -3,11 +3,11 @@ export interface UserProfile{
     email: string;
     phone?: string;
     adress?:{
-        street: string;
-        city: string;
-        state: string;
-        zip: string;
+        street?: string;
+        city?: string;
+        state?: string;
+        zip?: string;
     };
-    role:'user' | 'admin';
+  
     
 }

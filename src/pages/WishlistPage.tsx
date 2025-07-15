@@ -60,7 +60,7 @@ export default function WishlistPage() {
 
                 <Button
                   variant="destructive"
-                  onClick={() => handleRemove(product.id)}
+                  onClick={() => handleRemove(product.id || "")}
                 >
                   Remove
                 </Button>

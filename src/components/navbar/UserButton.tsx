@@ -55,7 +55,7 @@ const UserButton = () => {
         <DropdownItem onClick={() => alert("Settings clicked")}>
           Settings
         </DropdownItem>
-        <DropdownItem onClick={() => dispatch(logoutUser()) }>
+        <DropdownItem onClick={() => void dispatch(logoutUser())}>
           Logout
         </DropdownItem>
       </Dropdown>

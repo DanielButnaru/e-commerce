@@ -30,19 +30,18 @@ export default function ProductDetail() {
     state.wishlist.items.some((item) => item.id === id)
   );
 
-  useEffect(() => {
-    if (product?.thumbnail) {
-      setMainImage(product.thumbnail);
-    } else if (product?.images?.length > 0) {
-      setMainImage(product.images[0]);
-    } else {
-      setMainImage(undefined);
-    }
+useEffect(() => {
+  // Setează imaginea principală
+  setMainImage(
+    product?.thumbnail || 
+    product?.images?.[0] || 
+    undefined
+  );
 
-    // Resetă selecțiile când se schimbă produsul
-    setSelectedSize(null);
-    setSelectedColor(null);
-  }, [product]);
+  // Resetă selecțiile când se schimbă produsul
+  setSelectedSize(null);
+  setSelectedColor(null);
+}, [product]);
 
   // Actualizează imaginile când se selectează o culoare
   useEffect(() => {
@@ -107,7 +106,7 @@ export default function ProductDetail() {
   const toggleWishlist = () => {
     if (!product) return;
     if (isWished) {
-      dispatch(removeFromWishlist(product.id));
+      dispatch(removeFromWishlist(product.id!));
       toast("Eliminat din wishlist");
     } else {
       dispatch(addToWishlist(product));

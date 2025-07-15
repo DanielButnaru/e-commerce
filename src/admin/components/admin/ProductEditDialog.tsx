@@ -8,16 +8,8 @@ import {
 } from "../../../components/ui/dialog";
 import ProductEditForm from "./ProductEditForm";
 import { Button } from "../../../components/ui/button";
+import { type Product } from "../../../types/product";
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  category: string;
-  imageUrl: string;
-}
 
 interface ProductEditDialogProps {
   product: Product;

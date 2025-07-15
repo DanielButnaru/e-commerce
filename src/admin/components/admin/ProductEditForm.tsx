@@ -5,35 +5,10 @@ import { Button } from "../../../components/ui/button";
 import { Switch } from "../../../components/ui/switch";
 import { Label } from "../../../components/ui/label";
 
+import { type Product } from "../../../types/product";
+
 interface ProductEditFormProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    basePrice: number;
-    salePrice?: number;
-    isOnSale: boolean;
-    stock: number;
-    stockStatus: 'in-stock' | 'out-of-stock' | 'pre-order';
-    categories: string[];
-    thumbnail: string;
-    images: string[];
-    variants?: {
-      sizes: Array<{
-        id: string;
-        name: string;
-        priceModifier: number;
-        stock: number;
-      }>;
-      colors: Array<{
-        id: string;
-        name: string;
-        hexCode: string;
-        image: string;
-      }>;
-    };
-    // Add other fields as needed
-  };
+  product: Product;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -55,7 +30,7 @@ export default function ProductEditForm({ product, onSuccess, onCancel }: Produc
   const [stock, setStock] = useState(product.stock);
   const [lowStockThreshold, setLowStockThreshold] = useState(product.lowStockThreshold || 5);
   const [stockStatus, setStockStatus] = useState(product.stockStatus);
-  const [manageStock, setManageStock] = useState(product.manageStock || true);
+  const [manageStock, setManageStock] = useState(product.manageStock || false);
 
   // Media
   const [thumbnail, setThumbnail] = useState(product.thumbnail);
@@ -90,7 +65,7 @@ export default function ProductEditForm({ product, onSuccess, onCancel }: Produc
       return;
     }
 
-    const productRef = doc(db, "products", product.id);
+    const productRef = doc(db, "products", product.id!);
 
     try {
       await updateDoc(productRef, {

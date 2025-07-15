@@ -129,7 +129,7 @@ export default function CheckoutPage() {
       // 1. Verificăm stocurile
       for (const item of cartItems) {
         if (item.selectedSize) {
-          const productRef = doc(db, "products", item.id);
+          const productRef = doc(db, "products", item.id!);
           const productDoc = await transaction.get(productRef);
           
           if (!productDoc.exists()) {
@@ -174,7 +174,7 @@ export default function CheckoutPage() {
 
       // 3. Actualizăm stocurile
       for (const item of cartItems) {
-        const productRef = doc(db, "products", item.id);
+        const productRef = doc(db, "products", item.id!);
         const productDoc = await transaction.get(productRef);
         
         if (productDoc.exists()) {
