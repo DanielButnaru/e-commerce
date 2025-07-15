@@ -5,11 +5,10 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
+
 import { logoutUser } from "../../firebase/authService";
 
 const UserButton = () => {
-  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const { currentUser } = useAuth();
 
@@ -55,7 +54,7 @@ const UserButton = () => {
         <DropdownItem onClick={() => alert("Settings clicked")}>
           Settings
         </DropdownItem>
-        <DropdownItem onClick={() => void dispatch(logoutUser())}>
+        <DropdownItem onClick={() => {logoutUser()}}>
           Logout
         </DropdownItem>
       </Dropdown>
