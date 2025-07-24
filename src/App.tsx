@@ -64,7 +64,7 @@ function App() {
         >
         
           <Route path="profile" element={<ProfilePage />} />
-          <Route index path="/" element={<ShopPage />} />
+          <Route  path="/" element={<ShopPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="wishlist" element={<WishlistPage />} />
           <Route path="product/:id" element={<ProductDetail />} />
