@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { onAuthStateChanged, type User } from "firebase/auth";
@@ -9,7 +8,6 @@ type UserRole = "admin" | "user";
 
 interface UserData {
   role?: UserRole;
-  // alte câmpuri suplimentare
 }
 
 interface AuthContextType {

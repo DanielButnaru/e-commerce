@@ -35,7 +35,7 @@ function App() {
       
       <Routes>
         {/* Public routes */}
-        <Route index path="/onboarding" element={<OnBoarding />} />
+        <Route  path="/onboarding" element={<OnBoarding />} />
         <Route path="/about" element={<AboutProject/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -64,7 +64,7 @@ function App() {
         >
         
           <Route path="profile" element={<ProfilePage />} />
-          <Route  path="/" element={<ShopPage />} />
+          <Route index path="/" element={<ShopPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="wishlist" element={<WishlistPage />} />
           <Route path="product/:id" element={<ProductDetail />} />

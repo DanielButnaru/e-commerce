@@ -1,47 +1,61 @@
-import{
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    sendPasswordResetEmail,
-    signOut,
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  sendPasswordResetEmail,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "./firebaseConfig";
 
+import { auth } from "../firebase/firebaseConfig";
 
+//  Login cu sesiune controlabilă
+export const loginUser = async (
+  email: string,
+  password: string,
+  rememberMe: boolean = true
+) => {
+  const persistence = rememberMe
+    ? browserLocalPersistence
+    : browserSessionPersistence;
 
-export const registerUser = (email:string, password:string) => 
-    createUserWithEmailAndPassword(auth, email, password);
+  await setPersistence(auth, persistence);
+  return signInWithEmailAndPassword(auth, email, password);
+};
 
-export const  loginUser = (email:string, password:string) =>
-    signInWithEmailAndPassword(auth, email, password);
+// Login cu Google
+export const loginWithGoogle = async (rememberMe: boolean = true) => {
+  const persistence = rememberMe
+    ? browserLocalPersistence
+    : browserSessionPersistence;
 
-export const loginWithGoogle =  async() => {
-    const provider = new GoogleAuthProvider();
-    try{
-        const result = await signInWithPopup(auth,provider);
-        const user = result.user;
-        return{
-            uid: user.uid,
-            email: user.email,
-          name: user.displayName,
-            photo: user.photoURL,
-        };
-        }catch (error) {
-        console.error("Google login error:", error);
-        throw new Error("Failed to login with Google");
+  await setPersistence(auth, persistence);
 
-    }
-}
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  return result.user;
+};
 
-export const resetPassword = async (email: string) => {
-    try{
-        await sendPasswordResetEmail(auth, email);
-        return "Email sent! Please check your inbox.";
-    } catch(error:any){
-        console.error("Password reset error:", error);
-        throw new Error(error.message || "Failed to reset password");
-    }
-}
+//  Alte funcții
+export const registerUser = (email: string, password: string) =>
+  createUserWithEmailAndPassword(auth, email, password);
+
+export const resetPassword = (email: string) =>
+  sendPasswordResetEmail(auth, email);
 
 export const logoutUser = () => signOut(auth);
+
+//  Verificare sesiune activă
+export const checkSession = (): Promise<null | { uid: string; email: string | null }> => {
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      if (user) resolve({ uid: user.uid, email: user.email });
+      else resolve(null);
+    });
+  });
+};
