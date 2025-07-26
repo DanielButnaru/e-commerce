@@ -3,6 +3,8 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity } from "../../store/slice/cartSlice";
 import { useEffect, useState } from "react";
+import { Trash } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface CartItemProps {
   product: Product & {
@@ -73,26 +75,38 @@ export default function CartItem({ product }: CartItemProps) {
   };
 
   return (
-    <div className="flex items-start justify-between p-4 border-b gap-4">
-      <div className="flex flex-row space-x-4 flex-1">
-        <img
-          src={product.thumbnail}
-          alt={product.name}
-          className="w-16 h-16 object-cover rounded"
-        />
+    <div className="flex items-start justify-between  py-4 border-b gap-4">
+      <div className="flex flex-row items-center space-x-4 flex-1">
+        <Link to={`/product/${product.id}`}>
+          <img
+            src={product.thumbnail}
+            alt={product.name}
+            className="w-16 h-16 object-containbn  rounded"
+          />
+        </Link>
 
         <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <h4 className="font-semibold">{product.name}</h4>
-            {product.isOnSale && (
+          <div className="flex justify-between items-center">
+            <Link to={`/product/${product.id}`}>
+              <h4 className="font-semibold text-black">{product.name}</h4>
+            </Link>
+            {/* {product.isOnSale && (
               <span className="bg-red-500 text-white text-xs px-2 py-1 rounded">
                 Sale
               </span>
-            )}
+            )} */}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => product.id && dispatch(removeFromCart(product.id))}
+              className=" cursor-pointer"
+            >
+              <Trash />
+            </Button>
           </div>
 
           {/* Afișare variante selectate */}
-          <div className="mt-1 space-y-1">
+          <div className="space-y-1">
             {product.selectedSize && (
               <p className="text-sm text-gray-600">
                 Size: <span className="font-medium">{getSizeName()}</span>
@@ -113,7 +127,7 @@ export default function CartItem({ product }: CartItemProps) {
           </div>
 
           {/* Selector cantitate */}
-          <div className="flex items-center mt-3">
+          <div className="flex items-center justify-between mt-3">
             <div className="flex items-center border rounded-md overflow-hidden">
               <Button
                 variant="ghost"
@@ -139,29 +153,13 @@ export default function CartItem({ product }: CartItemProps) {
                 +
               </Button>
             </div>
-
-            <span className="mx-2 text-gray-400">|</span>
-
-            <p className="text-sm text-gray-500">
-              {formatPrice(currentPrice)} $
+            {/* Preț total */}
+            <p className="text-base font-bold mt-1">
+              {formatPrice(currentPrice * product.quantity)} $
             </p>
           </div>
-
-          {/* Preț total */}
-          <p className="text-sm font-medium mt-1">
-            Total: {formatPrice(currentPrice * product.quantity)} $
-          </p>
         </div>
       </div>
-
-      <Button
-        variant="destructive"
-        size="sm"
-        onClick={() => product.id && dispatch(removeFromCart(product.id))}
-        className="mt-1"
-      >
-        Remove
-      </Button>
     </div>
   );
 }

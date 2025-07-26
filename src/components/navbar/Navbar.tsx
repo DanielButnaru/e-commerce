@@ -1,4 +1,4 @@
-import{Menu} from 'lucide-react';
+import{LayoutDashboard, Menu} from 'lucide-react';
 
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
@@ -12,11 +12,7 @@ import WishlistButton from './WishlistButton';
 
 
 
-const navLinks = [
-  { href: '/', label: 'Products' },
-  { href: '/cart', label: 'Cart' },
-  { href: '/admin', label: 'Admin Dashboard' },
-];
+
 
 
 const Navbar = () =>{
@@ -32,7 +28,7 @@ const Navbar = () =>{
 
         {/* Center: Navigation */}
         <nav className="hidden md:flex gap-6">
-          {navLinks.map((link) => (
+          {/* {navLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
@@ -40,7 +36,7 @@ const Navbar = () =>{
             >
               {link.label}
             </Link>
-          ))}
+          ))} */}
         </nav>
 
         {/* Right: Icons */}
@@ -49,6 +45,11 @@ const Navbar = () =>{
           <CartButton />
           <UserButton />
           <WishlistButton />
+          <Link to="/admin">
+          <Button variant="ghost" size="icon" className='cursor-pointer'>
+            <LayoutDashboard />
+          </Button>
+          </Link>
 
           {/* Mobile Menu Toggle */}
           <Button
@@ -63,7 +64,7 @@ const Navbar = () =>{
       </div>
 
       {/* Mobile Menu */}
-      <MobileMenu open={mobileOpen} setOpen={setMobileOpen} navLinks={navLinks} />
+      <MobileMenu open={mobileOpen} setOpen={setMobileOpen} />
     </header>
   )
 }

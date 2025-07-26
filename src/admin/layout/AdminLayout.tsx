@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from "react-router-dom";
-import { Home, Package, ShoppingCart, Users } from "lucide-react";
+import { Home, Package, ShoppingCart, Users, ArrowLeft } from "lucide-react";
 
 export default function AdminLayout() {
   return (
@@ -7,11 +7,28 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className="w-64 bg-gray-100 p-4 space-y-4 border-r">
         <h2 className="text-lg font-bold mb-6">Admin Panel</h2>
+        <NavItem to="/">
+          {" "}
+          <ArrowLeft className="w-5 h-5" />
+          Back to Home{" "}
+        </NavItem>
         <nav className="space-y-2">
-          <NavItem to="/admin"> <Home size={18} /> Dashboard </NavItem>
-          <NavItem to="/admin/products"> <Package size={18} /> Produse </NavItem>
-          <NavItem to="/admin/orders"> <ShoppingCart size={18} /> Comenzi </NavItem>
-          <NavItem to="/admin/users"> <Users size={18} /> Utilizatori </NavItem>
+          <NavItem to="/admin">
+            {" "}
+            <Home size={18} /> Dashboard{" "}
+          </NavItem>
+          <NavItem to="/admin/products">
+            {" "}
+            <Package size={18} /> Produse{" "}
+          </NavItem>
+          <NavItem to="/admin/orders">
+            {" "}
+            <ShoppingCart size={18} /> Comenzi{" "}
+          </NavItem>
+          <NavItem to="/admin/users">
+            {" "}
+            <Users size={18} /> Utilizatori{" "}
+          </NavItem>
         </nav>
       </aside>
 
@@ -28,7 +45,9 @@ function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex items-center gap-2 p-2 rounded hover:bg-gray-200 ${isActive ? "bg-gray-300 font-medium" : ""}`
+        `flex items-center gap-2 p-2 rounded hover:bg-gray-200 ${
+          isActive ? "bg-gray-300 font-medium" : ""
+        }`
       }
     >
       {children}

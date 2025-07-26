@@ -1,15 +1,14 @@
 import { X } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import { Button } from '../ui/button'
 
 interface MobileMenuProps {
   open: boolean
   setOpen: (open: boolean) => void
-  navLinks: { href: string; label: string }[]
+  // navLinks: { href: string; label: string }[]
 }
 
-const MobileMenu = ({ open, setOpen, navLinks }: MobileMenuProps) => {
+const MobileMenu = ({ open, setOpen  }: MobileMenuProps) => {
   if (!open) return null
 
   return (
@@ -25,7 +24,7 @@ const MobileMenu = ({ open, setOpen, navLinks }: MobileMenuProps) => {
           <X />
         </Button>
       </div>
-      <nav className="mt-8 space-y-4">
+      {/* <nav className="mt-8 space-y-4">
         {navLinks.map((link) => (
           <Link
             key={link.href}
@@ -36,7 +35,7 @@ const MobileMenu = ({ open, setOpen, navLinks }: MobileMenuProps) => {
             {link.label}
           </Link>
         ))}
-      </nav>
+      </nav> */}
     </motion.div>
   )
 }

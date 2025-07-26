@@ -20,8 +20,8 @@ const UserButton = () => {
   }
   return (
     <div className="reltive">
-      <Button onClick={toggleDropdown} variant="ghost" size="icon">
-        <User />
+      <Button onClick={toggleDropdown} variant="ghost" size="icon" className='cursor-pointer'>
+        <User className="w-5 h-5"  />
       </Button>
       <Dropdown
         isOpen={isOpen}

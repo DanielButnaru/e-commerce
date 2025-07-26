@@ -149,6 +149,10 @@ export default function ShopPage() {
       </aside>
 
       <section>
+        {/* hero section */}
+        <div className="mb-6">
+    
+        </div>
         <h1 className="text-2xl font-bold mb-6">Products</h1>
 
         {products.length === 0 ? (
